@@ -7,13 +7,35 @@ for(var i=0; i < updateBtns.length; i++){
         console.log('pid', productId, 'a', action)
         console.log(user)
         if (user === 'AnonymousUser'){
-            console.log('not logged')
+            addCookieItem(productId, action)
         }
         else {
             updateUserOrder(productId, action)
         }
     })
 }
+
+function addCookieItem(productId, action){
+    if (action == 'add'){
+        if (cart[productId] == undefined){
+            cart[productId] = {'quantity': 1}
+        }
+        else {
+            cart[productId]['quantity'] += 1
+        }
+    }
+    if (action == 'remove'){
+        cart[productId]['quantity'] -= 1
+        if (cart[productId]['quantity'] <= 0){
+            delete cart[productId]
+        }
+    }
+    console.log('cart: ', cart)
+    document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+    // resta tutaj wrzucic
+    location.reload()
+}
+
 function updateUserOrder(productId, action){
     console.log('User is logged')
 

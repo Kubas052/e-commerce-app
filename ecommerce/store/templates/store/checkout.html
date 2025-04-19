@@ -5,6 +5,7 @@
     <div class="col-lg-6">
         <div class="box-element" id="form-wrapper">
             <form id="form">
+                {% csrf_token %}
                 <div id="user-info">
                     <div class="form-field">
                         <input required class="form-control" type="text" name="name" placeholder="Name..">
@@ -65,7 +66,7 @@
 
 <script type="text/javascript">
     var shipping = '{{order.shipping}}'
-    var total = '{{order.get_cart_total|floatformat:2}}'
+    var total = '{{order.get_cart_total}}'
 
     if (shipping == 'False'){
         document.getElementById('shipping-info').innerHTML = ''
@@ -83,6 +84,10 @@
     }
 
     var form = document.getElementById('form')
+
+    csrftoken = form.getElementsByTagName('input')[0].value
+    console.log('csrftokenzchechkouta:', form.getElementsByTagName('input')[0].value)
+
     form.addEventListener('submit', function(e){
         e.preventDefault()
         console.log('submited')
@@ -128,9 +133,11 @@
         })
             .then((response)=>{return response.json()})
             .then((data)=>{
-                 console.log('success', data);
-                 alert('completed');
-                 window.location.href = "{% url 'store' %}"
+                console.log('success', data);
+                alert('completed');
+                cart = {}
+                document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+                window.location.href = "{% url 'store' %}"
          })
     }
 </script>
