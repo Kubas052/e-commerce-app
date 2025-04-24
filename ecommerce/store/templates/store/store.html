@@ -1,6 +1,34 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
+<div class="row mb-3">
+    <div class="col-md-4">
+        <form method="get">
+            <input type="text" name="q" class="form-control" placeholder="Search products..." value="{{ request.GET.q }}">
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form method="get">
+            <select name="category" class="form-control" onchange="this.form.submit()">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form method="get">
+            <select name="sort" class="form-control" onchange="this.form.submit()">
+                <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Sort by Name</option>
+                <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Sort by Price</option>
+                <option value="date_added" {% if request.GET.sort == 'date_added' %}selected{% endif %}>Sort by Date Added</option>
+            </select>
+        </form>
+    </div>
+</div>
 <div class="row">
     {% for product in products %}
     <div class="col-lg-4">

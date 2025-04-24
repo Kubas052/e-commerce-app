@@ -14,8 +14,27 @@ def store(request):
     data = cartData(request)
     cartItems = data['cartItems']
 
+    query = request.GET.get('q', '')
+    category_id = request.GET.get('category', None)
+    sort_by = request.GET.get('sort', 'name')
+
     products = Product.objects.all()
-    context = {'products': products, 'cartItems': cartItems}
+
+    if query:
+        products = products.filter(name__icontains=query)
+
+    if category_id:
+        products = products.filter(category_id=category_id)
+
+    if sort_by == 'price':
+        products = products.order_by('price')
+    elif sort_by == 'date_added':
+        products = products.order_by('-date_added')
+    else:  # Default to sorting by name
+        products = products.order_by('name')
+
+    categories = Category.objects.all()
+    context = {'products': products, 'cartItems': cartItems, 'categories': categories}
     return render(request, 'store/store.html', context)
 
 def checkout(request):
