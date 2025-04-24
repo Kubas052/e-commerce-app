@@ -9,6 +9,7 @@
     </div>
     <div class="col-md-4">
         <form method="get">
+            <input type="hidden" name="q" value="{{ request.GET.q }}">
             <select name="category" class="form-control" onchange="this.form.submit()">
                 <option value="">All Categories</option>
                 {% for category in categories %}
@@ -21,6 +22,8 @@
     </div>
     <div class="col-md-4">
         <form method="get">
+            <input type="hidden" name="q" value="{{ request.GET.q }}">
+            <input type="hidden" name="category" value="{{ request.GET.category }}">
             <select name="sort" class="form-control" onchange="this.form.submit()">
                 <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Sort by Name</option>
                 <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Sort by Price</option>
